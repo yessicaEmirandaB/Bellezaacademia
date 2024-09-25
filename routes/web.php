@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlumnosController;
 use App\Http\Controllers\DetalleCursoMateriaController;
+use App\Http\Controllers\DetalleRegistroMaestroController;
 use App\Http\Controllers\AlumnoscursosController as ControllersAlumnoscursosController;
 use App\Http\Controllers\AulasController;
 use App\Http\Controllers\HorariosController;
@@ -42,6 +43,7 @@ Route::group(['middleware'=> ['auth']],function(){
     Route::resource('Alumno', AlumnosController::class);
     Route::resource('curso_materia', DetalleCursoMateriaController::class);
     Route::resource('detalle_registro_alumno', DetalleRegistroAlumnoController::class);
+    Route::resource('detalle_registro_maestro', DetalleRegistroMaestroController::class);
 });
 
 /////fin PARA ROLES Y PERMISOS

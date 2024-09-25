@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
+use Spatie\Permission\Models\Role;
+
 class MaestrosController extends Controller
 {
     function __construct()
@@ -21,9 +23,10 @@ class MaestrosController extends Controller
     }
     public function index(Request $request)
     {
-        $search = $request->input('search'); // Obtén el valor del campo de búsqueda
+        $search = $request->input('search');
         $maestro = Maestros::orderBy('id', 'ASC');
         $user = Auth::user();
+
         // Aplicar búsqueda si se proporciona un término de búsqueda
         if ($search) {
             $maestro->where(function ($query) use ($search) {
@@ -37,12 +40,15 @@ class MaestrosController extends Controller
                     ->orWhere('especialidad', 'like', '%' . $search . '%');
             });
         }
-        if (!$user->hasRole('super-admin')) {
-            $maestro = $maestro->join('roles', 'maestros.role_id', '=', 'roles.id')
-                ->select('maestros.*', 'roles.name as role_name');
+/*
+        if ($user->hasRole('super-admin')) {
+            $maestro = $maestro->get();
         } else {
-            $maestro = $maestro->get(); // Obtener todos los registros que coinciden con la búsqueda
-        }
+            $maestro = $maestro->join('roles', 'maestros.role_id', '=', 'roles.id')
+                ->select('maestros.*', 'roles.name as role_name')
+                ->get();
+        }*/
+
         return view('Maestro.index', compact('maestro'));
     }
     public function pdf(Request $request)
@@ -83,22 +89,20 @@ class MaestrosController extends Controller
     {
         //
         $campos = [
-            'apellidos' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
-            'nombres' => 'required||max:100|regex:/^[a-zA-Z ]+$/u',
-            'ci' => 'required|numeric|digits_between:1,20|unique:maestros',
+            'apellidos' => 'required|string|max:100',
+            'nombres' => 'required|string|max:100',
+            'ci' => 'required|string|max:100|unique:maestros',
             'direccion' => 'required|string|max:100',
-            'celular' => 'required|numeric|digits:8',
+            'celular' => 'required|string|size:8',
             'correo' => 'required|email',
             'Foto' => 'required|max:10000|mimes:jpeg,png,jpg',
-            'especialidad' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
+            'especialidad' => 'required|string|max:100',
         ];
         $mensaje = [
             'unique' => 'El :attribute ya existe verifique.',
             'required' => 'El :attributo es requerido',
             'Foto.required' => 'La foto requerida',
-            'digits' => 'El campo :attribute debe contener exactamente :digits caracteres.',
-            'regex' => 'El campo :attribute debe contener solamente letras',
-            'numeric' => 'El campo :attribute debe contener solamente números',
+            'size' => 'El campo :attribute debe contener exactamente :size caracteres.'
         ];
 
         $this->validate($request, $campos, $mensaje);
@@ -138,20 +142,18 @@ class MaestrosController extends Controller
     public function update(Request $request, $id)
     {
         $campos = [
-            'apellidos' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
-            'nombres' => 'required||max:100|regex:/^[a-zA-Z ]+$/u',
-            'ci' => 'required|numeric|digits_between:1,20|unique:maestros,ci,' . $id,
+            'apellidos' => 'required|string|max:100',
+            'nombres' => 'required|string|max:100',
+            'ci' => 'required|string|max:100|unique:maestros,ci,' . $id,
             'direccion' => 'required|string|max:100',
-            'celular' => 'required|numeric|digits:8',
+            'celular' => 'required|string|size:8',
             'correo' => 'required|email',
-            'especialidad' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
+            'especialidad' => 'required|string|max:100',
         ];
         $mensaje = [
             'unique' => 'El :attribute ya existe verifique.',
             'required' => 'El :attributo es requerido',
-            'digits' => 'El campo :attribute debe contener exactamente :digits caracteres.',
-            'regex' => 'El campo :attribute debe contener solamente letras',
-            'numeric' => 'El campo :attribute debe contener solamente números',
+            'size' => 'El campo :attribute debe contener exactamente :size caracteres.'
         ];
 
         if ($request->hasFile('Foto')) {

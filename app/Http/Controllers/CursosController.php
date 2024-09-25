@@ -6,6 +6,7 @@ use App\Models\cursos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Duracioncursos;
 
 class CursosController extends Controller
 {
@@ -51,8 +52,9 @@ class CursosController extends Controller
      */
     public function create()
     {
-        //
-        return view('Curso.create');
+        return view('Curso.create', [
+            'duracions' => Duracioncursos::all()
+        ]);
     }
 
     /**
@@ -62,8 +64,9 @@ class CursosController extends Controller
     {
         $campos = [
 
-            'nombrecurso' => 'required|string|max:100|regex:/^[a-zA-Z ]+$/u',
-            'precio' => 'nullable|numeric|digits_between:1,20',
+            'nombrecurso' => 'required|string|max:100',
+            'duracion_curso_id' => 'required',
+            'precio' => 'required|string|max:100',
         ];
         $mensaje = [
             'required' => 'El :attribute es requerido',
@@ -91,8 +94,9 @@ class CursosController extends Controller
     public function edit($id)
     {
         $cursos = cursos::findOrFail($id);
+        $duracions = Duracioncursos::all();
 
-        return view('Curso.edit', compact('cursos'));
+        return view('Curso.edit', compact('cursos', 'duracions'));
     }
 
     /**
@@ -101,8 +105,8 @@ class CursosController extends Controller
     public function update(Request $request, $id)
     {
         $campos = [
-            'nombrecurso' => 'required|string|max:100|regex:/^[a-zA-Z ]+$/u',
-            'precio' => 'nullable|numeric|max:100',
+            'nombrecurso' => 'required|string|max:100',
+            'precio' => 'required|string|max:100',
         ];
         $mensaje = [
             'required' => 'El :attribute es requerido',

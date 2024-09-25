@@ -13,16 +13,11 @@ class cursos extends Model
     protected $primarykey='id';
     protected $table='cursos';
     protected $fillable=[
+        'duracion_curso_id ',
         'nombrecurso',
         'precio',
     ];
-    public function alumnos(){
-        return $this->belongsToMany(Alumnos::class,'alumnoscursos');
-    }
-    public function maestros(){
-        return $this->belongsToMany(Maestros::class,'detalle__curso__maestros');
-    }
-    public function materia(){
-        return $this->hasMany(Materias::class,'id');
+    public function duracion(){
+        return $this->belongsTo(Duracioncursos::class,'duracion_curso_id','id');
     }
 }

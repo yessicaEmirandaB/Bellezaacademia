@@ -100,7 +100,7 @@ class AlumnoscursosController extends Controller
         $request->validate([
             'Alumnos_id' => 'nullable|exists:alumnos,id',
             'cursos_id' => 'nullable|exists:cursos,id',
-            'Calificacion' => 'nullable|numeric|max:100',
+            'Calificacion' => 'nullable|string|max:100',
 
         ]);
 
@@ -144,9 +144,11 @@ class AlumnoscursosController extends Controller
         $request->validate([
             'Alumnos_id' => 'nullable|exists:alumnos,id',
             'cursos_id' => 'nullable|exists:cursos,id',
-            'Calificacion' => 'nullable|numeric|max:100',
+            'Calificacion' => 'nullable|string|max:100',
+            'Estado' => 'string|max:100',
+
         ]);
-     
+
         $datosDetalle = $request->except(['_token', '_method']);
         Alumnoscursos::where('id', '=', $id)->update($datosDetalle);
 

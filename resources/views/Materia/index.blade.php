@@ -39,36 +39,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($materia as $materias)
-                        <tr>
-                            <td>{{ $materias->id }}</td>
-                            {{-- <td>
+                    @if ($materia->count() > 0)
+                        @foreach ($materia as $materias)
+                            <tr>
+                                <td>{{ $materias->id }}</td>
+                                {{-- <td>
                                 {{ $materias->cursos->nombrecurso }}
                             </td> --}}
-                            <td>{{ $materias->nombremateria }}</td>
+                                <td>{{ $materias->nombremateria }}</td>
 
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    @can('ver-materias')
-                                      <!--  <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
-                                    @endcan
-                                    @can('editar-materias')
-                                        <a href="{{ url('/Materia/' . $materias->id . '/edit') }}" class="btn btn-warning"><i
-                                                class="fa fa-pencil-alt"></i></a>
-                                    @endcan
-                                    @can('borrar-materias')
-                                        <form action="{{ url('/Materia/' . $materias->id) }}" class="d-inline" method="post">
-                                            @csrf
-                                            {{ method_field('DELETE') }}
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
-                                                    class="fa fa-trash" aria-hidden="true"></i></button>
-                                        </form>
-                                    @endcan
-                                </div>
-                            </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        @can('ver-materias')
+                                            <!--  <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
+                                        @endcan
+                                        @can('editar-materias')
+                                            <a href="{{ url('/Materia/' . $materias->id . '/edit') }}"
+                                                class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
+                                        @endcan
+                                        @can('borrar-materias')
+                                            <form action="{{ url('/Materia/' . $materias->id) }}" class="d-inline"
+                                                method="post">
+                                                @csrf
+                                                {{ method_field('DELETE') }}
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
+                                                        class="fa fa-trash" aria-hidden="true"></i></button>
+                                            </form>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <th colspan="7" class="text-center">No hay datos......</th>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

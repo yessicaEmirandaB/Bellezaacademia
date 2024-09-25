@@ -16,7 +16,7 @@
     <select name="Maestros_id" id="Maestros_id" class="form-control" required>
     <option value="">Seleccionar Maestro</option>
     @foreach ($maestros as $maestro)
-        <option value="{{ $maestro->id }}">{{$maestro->apellidos}} {{$maestro->nombres}}</option>
+        <option value="{{ $maestro->id }}">{{$maestro->nombres}}  {{$maestro->apellidos}}</option>
     @endforeach
     </select>
 </div>

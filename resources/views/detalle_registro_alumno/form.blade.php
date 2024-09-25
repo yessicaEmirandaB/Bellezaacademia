@@ -1,4 +1,4 @@
-<h1>{{ $modo }} Curso Materia </h1>
+<h1>{{ $modo }} Registro de Alumno </h1>
 
 @if(count($errors)>0)
 <div class="alert alert-danger" role="alert">
@@ -10,34 +10,32 @@
 </div>
 @endif
 
-<div class="form-group">
-    <label for="cursos_id">Seleccionar curso</label>
-    <select name="id_curso" id="id_curso" class="form-control" required>
-    <option value="">Seleccionar curso</option>
-    @foreach ($cursos as $curso)
-        <option value="{{ $curso->id }}">{{ $curso->nombrecurso }}</option>
-    @endforeach
-    </select>
+<div class="row">
+    <div class="col-5">
+        <div class="form-group">
+            <label for="id_detalle_alumno_curso">Alumnos con Curso</label>
+            <select name="id_detalle_alumno_curso" id="id_detalle_alumno_curso" class="form-control" required>
+            <option value="">Seleccionar un opción</option>
+            @foreach ($cbalumnocursoduracions as $item)
+                <option value="{{ $item->id_alumnoscursos}}">{{ $item->alumnocursoduracion }}</option>
+            @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="form-group">
+            <label for="id_detalle_curso_materia">Cursos con materias Asignadas</label>
+            <select name="id_detalle_curso_materia" id="id_materia" class="form-control" required>
+            <option value="">Seleccionar una opción</option>
+            @foreach ($cbcursomaterias as $item)
+                <option value="{{ $item->id_detalle_curso_materias }}">{{ $item->cursomateriahorarioaula }}</option>
+            @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-2 d-flex align-items-center mt-3">
+        <input class="btn btn-success m-1" type="submit" value="{{ $modo }} datos">
+        <a class="btn btn-primary m-1" href="{{url('detalle_registro_alumno/')}}">Regresar</a>
+    </div>
 </div>
-<div class="form-group">
-    <label for="cursos_id">Seleccionar materia</label>
-    <select name="id_materia" id="id_materia" class="form-control" required>
-    <option value="">Seleccionar materia</option>
-    @foreach ($materias as $materia)
-        <option value="{{ $materia->id }}">{{ $materia->nombremateria }}</option>
-    @endforeach
-    </select>
-</div>
-<div class="form-group">
-    <label for="cursos_id">Seleccionar horario</label>
-    <select name="id_horario" id="id_horario" class="form-control" required>
-    <option value="">Seleccionar horario</option>
-    @foreach ($horarios as $horario)
-        <option value="{{ $horario->id }}">{{$horario->HoraInicio}} - {{$horario->HoraFinal}}</option>
-    @endforeach
-    </select>
-</div>
-<input class="btn btn-success" type="submit" value="{{ $modo }} datos">
 
-<a class="btn btn-primary" href="{{url('curso_materia/')}}">Regresar</a>
-<br>

@@ -13,7 +13,8 @@
 
         <div class="card-header d-inline-flex">
             @can('crear-materias')
-                <a href="{{ url('curso_materia/create') }}" class="btn btn-success">REGISTRO DE MATERIA PARA ALUMNOS</a>
+                <a href="{{ url('detalle_registro_alumno/create') }}" class="btn btn-success">REGISTRO DE MATERIA PARA
+                    ALUMNOS</a>
             @endcan
             &nbsp;
             <!--  <a href="{{ url('Ma   teria/pdf') }}" class="btn btn-success" target="_blank">PDF</a>  Enlaces de paginación -->
@@ -42,36 +43,44 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($querys as $query)
+                    @if ($querys->count() > 0)
+                        @foreach ($querys as $query)
+                            <tr>
+                                <td>{{ $query->id }}</td>
+                                <td>{{ $query->Nombres }}</td>
+                                <td>{{ $query->nombrecurso }}</td>
+                                <td>{{ $query->nombremateria }}</td>
+                                <td>{{ $query->HoraInicio }} - {{ $query->HoraFinal }}</td>
+                                <td>{{ $query->NumAula }}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        @can('ver-materias')
+                                            <!--  <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
+                                        @endcan
+                                        @can('editar-materias')
+                                            <a href="{{ url('/detalle_registro_alumno/' . $query->id . '/edit') }}"
+                                                class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
+                                        @endcan
+                                        @can('borrar-materias')
+                                            <form action="{{ url('/detalle_registro_alumno/' . $query->id) }}" class="d-inline"
+                                                method="post">
+                                                @csrf
+                                                {{ method_field('DELETE') }}
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
+                                                        class="fa fa-trash" aria-hidden="true"></i></button>
+                                            </form>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr>
-                            <td>{{$query->id}}</td>
-                            <td>{{$query->Nombres}}</td>
-                            <td>{{$query->nombrecurso}}</td>
-                            <td>{{$query->nombremateria}}</td>
-                            <td>{{$query->HoraInicio}} - {{$query->HoraFinal}}</td>
-                            <td>{{$query->NumAula}}</td>
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    @can('ver-materias')
-                                      <!--  <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
-                                    @endcan
-                                    @can('editar-materias')
-                                        <a href="{{ url('/materia_curso/' . $query->id . '/edit') }}" class="btn btn-warning"><i
-                                                class="fa fa-pencil-alt"></i></a>
-                                    @endcan
-                                    @can('borrar-materias')
-                                        <form action="{{ url('/materia_curso/' . $query->id) }}" class="d-inline" method="post">
-                                            @csrf
-                                            {{ method_field('DELETE') }}
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
-                                                    class="fa fa-trash" aria-hidden="true"></i></button>
-                                        </form>
-                                    @endcan
-                                </div>
-                            </td>
+                            <th colspan="7" class="text-center">No hay datos......</th>
                         </tr>
-                    @endforeach
+                    @endif
+
                 </tbody>
             </table>
         </div>

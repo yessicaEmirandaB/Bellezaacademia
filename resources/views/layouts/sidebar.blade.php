@@ -84,6 +84,14 @@
                                         </a>
                                     </li>
                                 @endcan
+                                @can('ver-maestros')
+                                    <li class="{{ 'Maestro' == Request::is('Maestro*') ? 'active' : '' }}">
+                                        <a href="{{ route('detalle_registro_maestro.index') }}" target="_blank">
+                                            <i class='fas fa-chalkboard-teacher'></i>
+                                            <b>registro-maestro</b>
+                                        </a>
+                                    </li>
+                                @endcan
                                 @can('ver-detalle__curso_maestros')
                                     <li class="{{ 'MaestroCurso' == Request::is('MaestroCurso*') ? 'active' : '' }}">
                                         <a href="{{ route('MaestroCurso.index') }}">
@@ -187,13 +195,13 @@
                         </li>
                     @endcan
                     <!--  @can('ver-mod-pago')
-                         <li class="{{ 'Aula' == Request::is('Aula*') ? 'active' : '' }}">
-                                                    <a href="{{ route('Aula.index') }}">
-                                                        <i class="fa fa-book"></i>
-                                                        <b>PAGOS</b>
-                                                    </a>
-                                                </li>
-                    @endcan-->
+        <li class="{{ 'Aula' == Request::is('Aula*') ? 'active' : '' }}">
+                                                            <a href="{{ route('Aula.index') }}">
+                                                                <i class="fa fa-book"></i>
+                                                                <b>PAGOS</b>
+                                                            </a>
+                                                        </li>
+    @endcan-->
                     @can('ver-mod-reporte')
                         <li>
                             <a href="/" data-bs-toggle="collapse" data-bs-target="#homeSubmenuReporte"
@@ -246,7 +254,7 @@
                         </li>
                     @endcan
                 @else
-                    @if(auth()->user()->hasRole('maestro'))
+                    @if (auth()->user()->hasRole('maestro'))
                         <!-- El usuario tiene el rol de maestro -->
                         <p>Bienvenido, Alumno!</p>
                     @elseif(auth()->user()->hasRole('alumnos'))

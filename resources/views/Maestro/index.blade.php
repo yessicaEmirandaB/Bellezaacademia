@@ -46,48 +46,54 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($maestro as $key => $maestros)
+                    @if ($maestro->count() > 0)
+                        @foreach ($maestro as $key => $maestros)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $maestros->apellidos }}</td>
+                                <td>{{ $maestros->nombres }}</td>
+                                <td>{{ $maestros->ci }}</td>
+                                <td>{{ $maestros->direccion }}</td>
+                                <td>{{ $maestros->celular }}</td>
+                                <td>{{ $maestros->correo }}</td>
+                                <td>
+                                    <img class="img-thumbnail img-fluid"
+                                        src="{{ asset('storage') . '/' . $maestros->Foto }}" width="100"
+                                        alt="" />
+                                </td>
+
+                                <td>{{ $maestros->especialidad }}</td>
+                                <td>{{ $maestros->user_id }}</td>
+
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <!-- <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
+
+                                        @can('editar-maestros')
+                                            <a href="{{ url('/Maestro/' . $maestros->id . '/edit') }}"
+                                                class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
+                                        @endcan
+
+                                        @can('borrar-maestros')
+                                            <form action="{{ url('/Maestro/' . $maestros->id) }}" class="d-inline"
+                                                method="post">
+                                                @csrf
+                                                {{ method_field('DELETE') }}
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
+                                                        class="fa fa-trash" aria-hidden="true"></i></button>
+
+                                            </form>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $maestros->apellidos }}</td>
-                            <td>{{ $maestros->nombres }}</td>
-                            <td>{{ $maestros->ci }}</td>
-                            <td>{{ $maestros->direccion }}</td>
-                            <td>{{ $maestros->celular }}</td>
-                            <td>{{ $maestros->correo }}</td>
-                            <td>
-                                <img class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $maestros->Foto }}"
-                                    width="100" alt="" />
-                            </td>
-
-                            <td>{{ $maestros->especialidad }}</td>
-                            <td>{{ $maestros->user_id }}</td>
-
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                   <!-- <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
-
-                                    @can('editar-maestros')
-                                        <a href="{{ url('/Maestro/' . $maestros->id . '/edit') }}" class="btn btn-warning"><i
-                                                class="fa fa-pencil-alt"></i></a>
-                                    @endcan
-
-                                    @can('borrar-maestros')
-                                        <form action="{{ url('/Maestro/' . $maestros->id) }}" class="d-inline" method="post">
-                                            @csrf
-                                            {{ method_field('DELETE') }}
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
-                                                    class="fa fa-trash" aria-hidden="true"></i></button>
-
-                                        </form>
-                                    @endcan
-                                </div>
-                            </td>
-
-
+                            <th colspan="11" class="text-center">No hay datos.....</th>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

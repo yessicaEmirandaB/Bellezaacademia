@@ -2,10 +2,10 @@
 @section('content')
 <div class="container">
 
-    <form action="{{ url('/curso_materia') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ url('/detalle_registro_alumno') }}" method="post" enctype="multipart/form-data">
 
     @csrf
-    @include('curso_materia.form',['modo'=>'Crear']);
+    @include('detalle_registro_alumno.form',['modo'=>'Crear']);
 
     </form>
 </div>

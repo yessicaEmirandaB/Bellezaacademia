@@ -29,7 +29,7 @@ class DetalleCursoMateriaController extends Controller
             ->join('aulas', 'aulas.id', '=', 'horarios.id_aula')
             ->where('materias.nombremateria', 'like', '%' . $search . '%')
             ->orWhere('cursos.nombrecurso', 'like', '%' . $search . '%')
-            ->select('cursos.*', 'materias.*', 'detalle_curso_materias.*', 'horarios.*', 'aulas.*')
+            ->select('cursos.*', 'materias.*', 'detalle_curso_materias.*', 'horarios.*', 'aulas.*', 'detalle_curso_materias.id as id_detalle_curso_materias')
             ->paginate(10);
         return view('curso_materia.index', compact('curso_materias'));
     }
@@ -85,7 +85,7 @@ class DetalleCursoMateriaController extends Controller
         if ($exists) {
             return redirect()
                 ->back()
-                ->withErrors(['combination' => 'La combinación de curso, materia y horario ya existe.']);
+                ->withErrors(['combination' => 'El registro ya existe, verifique los datos!.']);
         }
         $validatedData = $request->validate($campos, $mensaje);
 
@@ -100,44 +100,37 @@ class DetalleCursoMateriaController extends Controller
     }
     public function edit($id)
     {
-        $materias = Materias::findOrFail($id);
-
-        return view('Materia.edit', ['materias' => $materias, 'cursos' => cursos::all()]);
+        $curso_materia = DetalleCursoMateria::findOrFail($id);
+        // dd($curso_materia->id);
+        return view('curso_materia.edit', ['horarios' => Horarios::all(),'materias' => Materias::all(), 'cursos' => cursos::all(), 'curso_materia' => $curso_materia]);
     }
 
     public function update(Request $request, $id)
     {
         $campos = [
-            'id_curso' => 'required|exists:cursos,id',
-            'id_materia' => 'required|exists:materias,id',
-            'id_horario' => 'required|exists:horarios,id',
+            'id_curso' => 'required',
+            'id_materia' => 'required',
+            'id_horario' => 'required',
         ];
-
         $mensaje = [
-            'id_curso.required' => 'El curso es requerido',
-            'id_curso.exists' => 'El curso no existe',
-            'id_materia.required' => 'La materia es requerida',
-            'id_materia.exists' => 'La materia no existe',
-            'id_horario.required' => 'El horario es requerido',
-            'id_horario.exists' => 'El horario no existe',
+            'required' => 'El :attribute es requerido',
         ];
-
         // Verificar si la combinación ya existe
         $exists = DetalleCursoMateria::where('id_curso', $request->id_curso)
             ->where('id_materia', $request->id_materia)
-            ->where('id_horario', $request->id_horario)
+            ->where('id_horario ', $request->id_horario )
             ->exists();
 
         if ($exists) {
             return redirect()
                 ->back()
-                ->withErrors(['combination' => 'La combinación de curso, materia y horario ya existe.']);
+                ->withErrors(['combination' => 'Este registro ya existe, verifique los datos!.']);
         }
         $validatedData = $request->validate($campos, $mensaje);
 
-        $datos = $request->except('_token');
-        DetalleCursoMateria::create($datos);
-        return redirect('curso_materia')->with('mensaje', 'Datos creados con éxito');
+        $datos = $request->except(['_token', '_method']);
+        DetalleCursoMateria::where('id', '=', $id)->update($datos);
+        return redirect('detalle_registro_maestro')->with('mensaje', 'Datos actualizados con éxito');
     }
 
     /**
@@ -146,8 +139,8 @@ class DetalleCursoMateriaController extends Controller
     public function destroy($id)
     {
         //
-        Materias::destroy($id);
+        DetalleCursoMateria::destroy($id);
 
-        return redirect('Materia')->with('mensaje', 'El curso fue borrado correctamente');
+        return redirect('curso_materia')->with('mensaje', 'Borrado correctamente');
     }
 }

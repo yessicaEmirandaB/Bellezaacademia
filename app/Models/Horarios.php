@@ -20,7 +20,7 @@ class Horarios extends Model
 
     public function aulas()
     {
-        return $this->belongsTo(Aulas::class, 'Aulas_id');
+        return $this->belongsTo(Aulas::class, 'id_aula');
     }
 
     // public function materias()

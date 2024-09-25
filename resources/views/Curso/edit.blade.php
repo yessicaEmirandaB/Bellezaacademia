@@ -6,7 +6,7 @@
     @csrf
     {{ method_field('PATCH') }}
 
-    @include('Curso.form',['modo'=>'Editar']);
+    @include('Curso.form2',['modo'=>'Editar']);
     </form>
 </div>
 @endsection

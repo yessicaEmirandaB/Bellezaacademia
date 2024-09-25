@@ -10,18 +10,19 @@
                 </button>
             </div>
         @endif
+
         <div class="card-header d-inline-flex">
-            @can('crear-cursos')
-                <a href="{{ url('Curso/create') }}" class="btn btn-success">Registrar nuevo curso</a>
+            @can('crear-materias')
+                <a href="{{ url('detalle_registro_maestro/create') }}" class="btn btn-success">REGISTRO DE MATERIA PARA
+                    MAESTRO</a>
             @endcan
             &nbsp;
-            <!--  <a href="{{ url('Curso/pdf') }}" class="btn btn-success" target="_blank">PDF</a>  Enlaces de paginación -->
-            <a href="{{ url('Curso/pdf?search=' . request('search')) }}" class="btn btn-success" target="_blank">PDF</a>
+            <!--  <a href="{{ url('Materia/pdf') }}" class="btn btn-success" target="_blank">PDF</a>  Enlaces de paginación -->
+            <a href="{{ url('Materia/pdf?search=' . request('search')) }}" class="btn btn-success" target="_blank">PDF</a>
         </div>
-
         <br>
         <div class="card mt-3">
-            <form class="d-flex" method="GET" action="{{ url('Curso') }}">
+            <form class="d-flex" method="GET" action="{{ url('materia_curso') }}">
                 <input name="search" class="form-control me-2" type="search" placeholder="Escribe el nombre"
                     aria-label="Search" value="{{ request('search') }}">
                 <button class="btn btn-outline-success" type="submit">Buscar</button>
@@ -32,34 +33,38 @@
             <table class="table table-striped table-bordered">
                 <thead class="table-danger">
                     <tr>
-                        <th>#</th>
-                        <th>Nombre del curso</th>
-                        <th>Duración</th>
-                        <th>Precio (bs)</th>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Curso</th>
+                        <th>Materia</th>
+                        <th>Horario</th>
+                        <th>Aula</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($curso->count() > 0)
-                        @foreach ($curso as $key => $cursos)
+                    @if ($querys->count() > 0)
+                        @foreach ($querys as $query)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $cursos->nombrecurso }}</td>
-                                <td>Fecha Inicio: {{ $cursos->duracion->fechaInicio }} - Fecha
-                                    fin:{{ $cursos->duracion->fechaFin }}</td>
-                                <td>{{ $cursos->precio }}</td>
-
+                                <td>{{ $query->id_detalle_registro_maestros }}</td>
+                                <td>{{ $query->nombres }}</td>
+                                <td>{{ $query->nombrecurso }}</td>
+                                <td>{{ $query->nombremateria }}</td>
+                                <td>{{ $query->horarioss }}</td>
+                                <td>{{ $query->NumAula }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        @can('ver-cursos')
-                                            <!-- <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
+                                        @can('ver-materias')
+                                            <!--  <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
                                         @endcan
-                                        @can('editar-cursos')
-                                            <a href="{{ url('/Curso/' . $cursos->id . '/edit') }}" class="btn btn-warning"><i
-                                                    class="fa fa-pencil-alt"></i></a>
+                                        @can('editar-materias')
+                                            <a href="{{ url('/detalle_registro_maestro/' . $query->id_detalle_registro_maestros . '/edit') }}"
+                                                class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
                                         @endcan
-                                        @can('borrar-cursos')
-                                            <form action="{{ url('/Curso/' . $cursos->id) }}" class="d-inline" method="post">
+                                        @can('borrar-materias')
+                                            <form
+                                                action="{{ url('/detalle_registro_maestro/' . $query->id_detalle_registro_maestros) }}"
+                                                class="d-inline" method="post">
                                                 @csrf
                                                 {{ method_field('DELETE') }}
                                                 <button type="submit" class="btn btn-danger"

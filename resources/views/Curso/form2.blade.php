@@ -1,4 +1,4 @@
-<h1>{{ $modo }} Curso </h1>
+<h1>{{ $modo }} Editar Curso </h1>
 
 @if(count($errors)>0)
 <div class="alert alert-danger" role="alert">
@@ -13,16 +13,16 @@
 <div class="form-group">
 <label for="nombrecurso"> Nombre del Curso </label>
 <input type="text" class="form-control" name="nombrecurso"
-     value="{{isset($cursos->nombrecurso)?$cursos->nombrecurso:old('nombrecurso')}}" id="nombrecurso">
+value="{{isset($cursos->nombrecurso)?$cursos->nombrecurso:old('nombrecurso')}}" id="nombrecurso">
 </div>
 <br>
 <div class="form-group">
-    <label for="duracion_curso_id">Seleccionar una Duración</label>
+    <label for="duracion_curso_id">Duración del curso</label>
     <select name="duracion_curso_id" id="duracion_curso_id" class="form-control" required>
-    <option value="">Seleccionar una duración</option>
-    @foreach ($duracions as $duracion)
-        <option value="{{ $duracion->id }}">Fecha inicio: ({{$duracion->fechaInicio}}) - Fecha Fin: ({{$duracion->fechaFin}})</option>
-    @endforeach
+        <option value="">Seleccionar opción</option>
+        @foreach ($duracions as $duracion)
+            <option value="{{ $duracion->id }}"@if ($duracion->id == $cursos->duracion_curso_id) {{ 'selected' }} @endif>Fecha Inicio: ({{$duracion->fechaInicio}}) -  Fecha Fin:({{$duracion->fechaFin}})</option>
+        @endforeach
     </select>
 </div>
 <br>

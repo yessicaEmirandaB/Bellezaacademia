@@ -20,8 +20,7 @@ class AlumnosController extends Controller
         $this->middleware('permission:borrar-alumnos', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $search = $request->input('search'); // Obtén el valor del campo de búsqueda
 
         $alumno = Alumnos::orderBy('id', 'ASC');
@@ -70,10 +69,10 @@ class AlumnosController extends Controller
     {
         //
         $campos = [
-            'Apellidos' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
+            'Apellidos' => 'required|string|max:100',
             'Nombres' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
-            'CI' => 'required|numeric|digits_between:1,20|unique:alumnos', // Verifica la unicidad
-            'Direccion' => 'required|string|max:50',
+            'CI' => 'required|string|max:100|unique:alumnos', // Verifica la unicidad
+            'Direccion' => 'required|string|max:100',
             'Celular' => 'required|numeric|digits:8',
             'Correo' => 'required|email',
             'Foto' => 'required|max:10000|mimes:jpeg,png,jpg',
@@ -82,9 +81,9 @@ class AlumnosController extends Controller
             'unique' => 'El :attribute ya existe verifique.',
             'required' => 'El :attribute es requerido',
             'Foto.required' => 'La foto requerida',
-            'digits' => 'El campo :attribute debe contener exactamente :digits caracteres.',
+            'size' => 'El campo :attribute debe contener exactamente :size caracteres.',
             'regex' => 'El campo :attribute debe contener solamente letras',
-            'numeric' => 'El campo :attribute debe contener solamente números',
+            'numeric' => 'El campo :attribute debe contener solamente números'
         ];
 
         $this->validate($request, $campos, $mensaje);
@@ -113,19 +112,17 @@ class AlumnosController extends Controller
     public function update(Request $request, $id)
     {
         $campos = [
-            'Apellidos' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
-            'Nombres' => 'required|max:100|regex:/^[a-zA-Z ]+$/u',
-            'CI' => 'required|numeric|digits_between:1,20|unique:alumnos,CI,' . $id,
-            'Direccion' => 'required|string|max:50',
-            'Celular' => 'required|numeric|digits:8',
+            'Apellidos' => 'required|string|max:100',
+            'Nombres' => 'required|string|max:100',
+            'CI' => 'required|string|max:100|unique:alumnos,CI,' . $id,
+            'Direccion' => 'required|string|max:100',
+            'Celular' => 'required|string|size:8',
             'Correo' => 'required|email',
         ];
         $mensaje = [
             'unique' => 'El :attribute ya existe verifique.',
             'required' => 'El :attribute es requerido',
-            'digits' => 'El campo :attribute debe contener exactamente :digits caracteres.',
-            'regex' => 'El campo :attribute debe contener solamente letras',
-            'numeric' => 'El campo :attribute debe contener solamente números',
+            'size' => 'El campo :attribute debe contener exactamente :size caracteres.',
         ];
 
         if ($request->hasFile('Foto')) {
@@ -165,8 +162,7 @@ class AlumnosController extends Controller
         $permissions = Permission::where('name', 'like', '%alumnos%')->get();
         dd($role);
     }
-    public function detailIAulumnoRegisterndex()
-    {
+    public function detailIAulumnoRegisterndex(){
         // alumno curso materia horario
     }
 }

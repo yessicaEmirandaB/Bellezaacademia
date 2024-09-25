@@ -41,35 +41,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($curso_materias as $curso_materia)
+                    @if ($curso_materias->count() > 0)
+                        @foreach ($curso_materias as $curso_materia)
+                            <tr>
+                                <td>{{ $curso_materia->id_detalle_curso_materias }}</td>
+                                <td>{{ $curso_materia->nombrecurso }}</td>
+                                <td>{{ $curso_materia->nombremateria }}</td>
+                                <td>{{ $curso_materia->HoraInicio }} - {{ $curso_materia->HoraFinal }}</td>
+                                <td>{{ $curso_materia->NumAula }}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        @can('ver-materias')
+                                            <!--  <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
+                                        @endcan
+                                        @can('editar-materias')
+                                            <a href="{{ url('/curso_materia/' . $curso_materia->id_detalle_curso_materias . '/edit') }}"
+                                                class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
+                                        @endcan
+                                        @can('borrar-materias')
+                                            <form
+                                                action="{{ url('/curso_materia/' . $curso_materia->id_detalle_curso_materias) }}"
+                                                class="d-inline" method="post">
+                                                @csrf
+                                                {{ method_field('DELETE') }}
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
+                                                        class="fa fa-trash" aria-hidden="true"></i></button>
+                                            </form>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr>
-                            <td>{{$curso_materia->id}}</td>
-                            <td>{{$curso_materia->nombrecurso}}</td>
-                            <td>{{$curso_materia->nombremateria}}</td>
-                            <td>{{$curso_materia->HoraInicio}} - {{$curso_materia->HoraFinal}}</td>
-                            <td>{{$curso_materia->NumAula}}</td>
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    @can('ver-materias')
-                                      <!--  <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
-                                    @endcan
-                                    @can('editar-materias')
-                                        <a href="{{ url('/materia_curso/' . $curso_materia->id . '/edit') }}" class="btn btn-warning"><i
-                                                class="fa fa-pencil-alt"></i></a>
-                                    @endcan
-                                    @can('borrar-materias')
-                                        <form action="{{ url('/materia_curso/' . $curso_materia->id) }}" class="d-inline" method="post">
-                                            @csrf
-                                            {{ method_field('DELETE') }}
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
-                                                    class="fa fa-trash" aria-hidden="true"></i></button>
-                                        </form>
-                                    @endcan
-                                </div>
-                            </td>
+                            <th colspan="7" class="text-center">No hay datos......</th>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
