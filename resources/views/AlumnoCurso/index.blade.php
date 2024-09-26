@@ -40,6 +40,9 @@
                         <th>#</th>
                         <th>Alumno</th>
                         <th>Curso</th>
+                        <th>Costo</th>
+                        <th>A Cuenta</th>
+                        <th>Saldo</th>
                         <th>Calificación</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -52,7 +55,10 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td> {{ $detalle->Nombres }} {{ $detalle->Apellidos }}</td>
                                 <td> {{ $detalle->nombrecurso }} </td>
-                                <td> {{ $detalle->Calificacion }} </td>
+                                <td class="text-end"> {{ $detalle->precio }} </td>
+                                <td class="text-end"> {{ $detalle->a_cuenta ?? 0 }} </td>
+                                <td class="text-end"> {{ $detalle->saldo ?? 0 }} </td>
+                                <td> {{ $detalle->Calificacion ?? 0 }} </td>
                                 <td>
                                     @if ($detalle->Calificacion > 51)
                                         <span class="badge bg-success">Aprobado</span>
@@ -65,6 +71,12 @@
                                         @can('ver-alumnoscursos')
                                             <!--   <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
                                         @endcan
+
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#pagarCurso">
+                                            <i class="fa fa-money-bill-wave" aria-hidden="true"></i>
+                                        </button>
+
                                         @can('editar-alumnoscursos')
                                             <a href="{{ url('/AlumnoCurso/' . $detalle->id . '/edit') }}"
                                                 class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
@@ -91,6 +103,7 @@
                     @endif
                 </tbody>
             </table>
+            @include('AlumnoCurso.pagar-curso')
             {{ $detalles->appends(['search' => request('search'), 'estado' => request('estado')])->links() }}
         </div>
     </div>

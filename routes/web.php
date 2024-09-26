@@ -67,6 +67,8 @@ Route::resource('/Alumno', AlumnosController::class);
 Route::get('AlumnoCurso/pdf',[ControllersAlumnoscursosController::class, 'pdf'] )->name('AlumnoCurso.pdf');
 Route::get('AlumnoCurso/pdfcali',[ControllersAlumnoscursosController::class, 'pdfcali'] )->name('AlumnoCurso.pdfcali');
 Route::resource('/AlumnoCurso', ControllersAlumnoscursosController::class);
+Route::post('AlumnoCurso/pagar',[ControllersAlumnoscursosController::class, 'pagar_curso'] )->name('AlumnoCurso.pagar');
+
 Route::get('MaestroCurso/pdf',[DetalleCursoMaestroController::class, 'pdf'] )->name('MaestroCurso.pdf');
 Route::resource('/MaestroCurso', DetalleCursoMaestroController::class);
 Route::get('Maestro/pdf',[MaestrosController::class, 'pdf'] )->name('Maestro.pdf');
