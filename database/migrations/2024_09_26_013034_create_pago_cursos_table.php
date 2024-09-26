@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('usuario');
             $table->decimal('monto', 10, 2);
             $table->string('metodo_pago');
-            $table->string('observacion');
+            $table->string('observacion')->nullable();
             $table->timestamps();
         });
     }

@@ -41,6 +41,12 @@ class AlumnoscursosController extends Controller
             })
             ->paginate(10); // Pagina los resultados
 
+        //sumo de pago_cursos por alumnocurso_id    de la tabla pagocursos 
+        $detalles->map(function ($detalle) {
+            $detalle->a_cuenta = PagoCursos::where('alumnocurso_id', $detalle->id)->sum('monto');
+            return $detalle;
+        });
+
         return view('AlumnoCurso.index', compact('detalles'));
     }
     public function pdf(Request $request)
@@ -187,7 +193,7 @@ class AlumnoscursosController extends Controller
             'usuario' => Auth::user()->name,
             'monto' => $request->monto,
             'metodo_pago' => $request->metodo_pago,
-            'observacion' => $request->observacion,
+            'observacion' => $request->observacion ?? '',
         ]);
         return redirect('AlumnoCurso')->with('mensaje', 'Pago registrado con éxito');
     }

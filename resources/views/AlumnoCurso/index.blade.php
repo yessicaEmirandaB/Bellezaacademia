@@ -57,7 +57,7 @@
                                 <td> {{ $detalle->nombrecurso }} </td>
                                 <td class="text-end"> {{ $detalle->precio }} </td>
                                 <td class="text-end"> {{ $detalle->a_cuenta ?? 0 }} </td>
-                                <td class="text-end"> {{ $detalle->saldo ?? 0 }} </td>
+                                <td class="text-end"> {{ $detalle->precio - $detalle->a_cuenta }} </td>
                                 <td> {{ $detalle->Calificacion ?? 0 }} </td>
                                 <td>
                                     @if ($detalle->Calificacion > 51)
@@ -71,7 +71,7 @@
                                         @can('ver-alumnoscursos')
                                             <!--   <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
                                         @endcan
-
+                                        @include('AlumnoCurso.pagar-curso')
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                             data-bs-target="#pagarCurso">
                                             <i class="fa fa-money-bill-wave" aria-hidden="true"></i>
@@ -103,7 +103,6 @@
                     @endif
                 </tbody>
             </table>
-            @include('AlumnoCurso.pagar-curso')
             {{ $detalles->appends(['search' => request('search'), 'estado' => request('estado')])->links() }}
         </div>
     </div>
