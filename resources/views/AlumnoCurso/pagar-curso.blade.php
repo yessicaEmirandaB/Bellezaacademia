@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-sm-4">
                             <strong>Saldo:</strong>
-                            <span>{{ $detalle->saldo }}</span>
+                            <span>{{ $detalle->precio - $detalle->a_cuenta }}</span>
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                         <div class="col-sm-6">
                             <strong>Ingrese Monto:</strong>
                             <input type="number" name="monto" class="form-control" placeholder="Ingrese Monto"
-                                required>
+                                min="1" max="{{ $detalle->precio - $detalle->a_cuenta }}" required>
                         </div>
                         <div class="col-sm-12">
                             <strong>Observación:</strong>
