@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pago_cursos', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('alumnocurso_id');
             $table->dateTime('fecha');
             $table->string('usuario');
             $table->decimal('monto', 10, 2);
