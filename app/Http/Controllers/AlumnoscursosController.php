@@ -25,7 +25,7 @@ class AlumnoscursosController extends Controller
 
     $detalles = Alumnos::join('alumnoscursos', 'alumnos.id', '=', 'alumnoscursos.Alumnos_id')
         ->join('cursos', 'cursos.id', '=', 'alumnoscursos.cursos_id')
-        ->select('alumnos.*', 'cursos.nombrecurso', 'alumnoscursos.Calificacion', 'alumnoscursos.Estado')
+        ->select('alumnos.*', 'cursos.nombrecurso', 'cursos.precio','alumnoscursos.Calificacion', 'alumnoscursos.Estado')
         ->when($search, function ($query, $search) {
             return $query->where('alumnos.Nombres', 'like', '%' . $search . '%')
                 ->orWhere('alumnos.Apellidos', 'like', '%' . $search . '%')
