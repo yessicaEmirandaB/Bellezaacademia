@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cursos;
 use App\Models\PagoCursos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class PagoCursosController extends Controller
 {
@@ -29,13 +31,11 @@ class PagoCursosController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-
-        ;
+    {;
         $validator = Validator::make($request->all(), [
             'alumnocurso_id' => 'required',
-            'monto'=>'numeric|required',
-            'observacion'=>'nullable'
+            'monto' => 'numeric|required',
+            'observacion' => 'nullable'
         ]);
 
         if ($validator->fails()) {
@@ -43,13 +43,13 @@ class PagoCursosController extends Controller
             return response()->json(["errors" => $validator->errors()]);
         }
 
-        $pagocurso= PagoCursos::create([
+        $pagocurso = PagoCursos::create([
             'alumnocurso_id' => $request->id,
             'fecha' => date('Y-m-d H:i:s'),
             'usuario' => Auth::user()->name,
-            'monto'=>$request->monto,
+            'monto' => $request->monto,
             'metodo_pago' => $request->metodo_pago,
-            'observacion'=>$request->observacion,
+            'observacion' => $request->observacion,
         ]);
         return redirect('AlumnoCurso')->with('mensaje', 'Pago registrado con éxito');
     }
@@ -57,10 +57,7 @@ class PagoCursosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PagoCursos $pagoCursos)
-    {
-        
-    }
+    public function show(PagoCursos $pagoCursos) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -84,5 +81,45 @@ class PagoCursosController extends Controller
     public function destroy(PagoCursos $pagoCursos)
     {
         //
+    }
+
+    public function detalle_ingreso()
+    {
+        $cursos = DB::table('cursos')->select('id', 'nombrecurso')->get() ?? [];
+
+        return view('reportes.detalle_ingresos', compact('cursos'));
+    }
+
+    public function filtro_ingresos(Request $request)
+    {
+        $cursos = DB::table('cursos')->select('id', 'nombrecurso')->get() ?? [];
+        $fecha_inicio = date('Y-m-d 00:00:00', strtotime($request->fecha_inicio));
+        $fecha_fin = date('Y-m-d 23:59:59', strtotime($request->fecha_fin));
+
+        $pago_cursos = DB::table('pago_cursos')
+            ->select('pago_cursos.*', 'cursos.nombrecurso', 'alumnos.nombres', 'alumnos.apellidos')
+            ->join('cursos', 'pago_cursos.curso_id', '=', 'cursos.id')
+            ->join('alumnos', 'pago_cursos.alumno_id', '=', 'alumnos.id');
+
+
+        if ($request->curso_id != 0) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.curso_id', $request->curso_id);
+        }
+
+        if ($request->fecha_inicio != null) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.fecha', '>=', $fecha_inicio);
+        }
+
+        if ($request->fecha_fin != null) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.fecha', '<=', $fecha_fin);
+        }
+
+        if ($request->metodo_pago != 0) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.metodo_pago', $request->metodo_pago);
+        }
+
+        $pago_cursos = $pago_cursos->get();
+
+        return view('reportes.detalle_ingresos', compact('pago_cursos', 'cursos'));
     }
 }

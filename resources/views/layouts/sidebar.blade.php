@@ -196,11 +196,11 @@
                     @endcan
                     <!--  @can('ver-mod-pago')
         <li class="{{ 'Aula' == Request::is('Aula*') ? 'active' : '' }}">
-                                                            <a href="{{ route('Aula.index') }}">
-                                                                <i class="fa fa-book"></i>
-                                                                <b>PAGOS</b>
-                                                            </a>
-                                                        </li>
+                                                                                    <a href="{{ route('Aula.index') }}">
+                                                                                        <i class="fa fa-book"></i>
+                                                                                        <b>PAGOS</b>
+                                                                                    </a>
+                                                                                </li>
     @endcan-->
                     @can('ver-mod-reporte')
                         <li>
@@ -249,6 +249,13 @@
                                             <b>Horario</b>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('ver-horarios')
+                                    {{--  <li class="{{ 'Horario' == Request::is('Horario*') ? 'active' : '' }}"> --}}
+                                    <a href="{{ route('reportes.detalle_ingresos') }}">
+                                        <b><i class="fas fa-money-bill-wave"></i> Reporte Ingresos</b>
+                                    </a>
+                                    {{--  </li> --}}
                                 @endcan
                             </ul>
                         </li>
