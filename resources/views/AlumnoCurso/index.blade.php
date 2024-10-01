@@ -38,6 +38,7 @@
                 <thead class="table-danger">
                     <tr>
                         <th>#</th>
+                        <th>alumnocurso_id</th>
                         <th>Alumno</th>
                         <th>Curso</th>
                         <th>Costo</th>
@@ -53,6 +54,7 @@
                         @foreach ($detalles as $key => $detalle)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
+                                <td > {{ $detalle->id }} </td>
                                 <td> {{ $detalle->Nombres }} {{ $detalle->Apellidos }}</td>
                                 <td> {{ $detalle->nombrecurso }} </td>
                                 <td class="text-end"> {{ $detalle->precio }} </td>

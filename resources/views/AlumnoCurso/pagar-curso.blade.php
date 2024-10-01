@@ -7,10 +7,11 @@
                 </h5>
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
+            
             <form action="{{ route('AlumnoCurso.pagar', $detalle->id) }}" method="POST">
                 @csrf
                 <div class="modal-body">
+                    <input  name="alumnocurso_id" value="{{ $detalle->id }}">
                     <div class="row">
                         <div class="col-sm-12">
                             <strong>Alumno:</strong>
@@ -50,7 +51,6 @@
                             <strong>Observación:</strong>
                             <textarea name="observacion" class="form-control" rows="1" placeholder="Ingrese Observaciones"></textarea>
                         </div>
-                        <input type="hidden" name="alumnocurso_id" value="{{ $detalle->id }}">
                     </div>
                 </div>
 
