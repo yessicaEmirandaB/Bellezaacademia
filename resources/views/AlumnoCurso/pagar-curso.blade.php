@@ -1,17 +1,18 @@
-<div class="modal fade" id="pagarCurso" tabindex="-1" aria-labelledby="pagarCursoLabel" aria-hidden="true">
+<div class="modal fade" id="pagarCurso{{ $detalle->id }}" tabindex="-1"
+    aria-labelledby="pagarCursoLabel{{ $detalle->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="pagarCursoLabel">
+                <h5 class="modal-title" id="pagarCursoLabel{{ $detalle->id }}">
                     <strong>Pagar Curso:</strong> {{ $detalle->nombrecurso ?? '-' }}
                 </h5>
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
+
             <form action="{{ route('AlumnoCurso.pagar', $detalle->id) }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <input  name="alumnocurso_id" value="{{ $detalle->id }}">
+                    <input name="alumnocurso_id" value="{{ $detalle->id }}">
                     <div class="row">
                         <div class="col-sm-12">
                             <strong>Alumno:</strong>
@@ -62,9 +63,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .modal-dialog {
-        max-width: 40%;
-    }
-</style>

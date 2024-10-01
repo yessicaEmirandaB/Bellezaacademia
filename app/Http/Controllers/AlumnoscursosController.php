@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PagoCursos;
 use DB;
+
 class AlumnoscursosController extends Controller
 {
     function __construct()
@@ -27,26 +28,26 @@ class AlumnoscursosController extends Controller
         $estado = $request->input('estado'); // Obtén el valor del filtro de estado
 
         $detalles = DB::table('alumnoscursos')
-    ->join('alumnos', 'alumnos.id', '=', 'alumnoscursos.Alumnos_id')
-    ->join('cursos', 'cursos.id', '=', 'alumnoscursos.cursos_id')
-    ->select('alumnoscursos.id', 'alumnos.Nombres', 'alumnos.Apellidos', 'cursos.nombrecurso', 'cursos.precio', 'alumnoscursos.Alumnos_id', 'alumnoscursos.cursos_id', 'alumnoscursos.costo', 'alumnoscursos.Calificacion', 'alumnoscursos.Estado')
-    ->when($search, function ($query, $search) {
-        return $query->where('alumnos.Nombres', 'like', '%' . $search . '%')
-                     ->orWhere('alumnos.Apellidos', 'like', '%' . $search . '%')
-                     ->orWhere('cursos.nombrecurso', 'like', '%' . $search . '%')
-                     ->orWhere('alumnoscursos.Calificacion', 'like', '%' . $search . '%');
-    })
-    ->when($estado, function ($query, $estado) {
-        return $query->where('alumnoscursos.Estado', $estado);
-    })
-    ->paginate(10); // Pagina los resultados
+            ->join('alumnos', 'alumnos.id', '=', 'alumnoscursos.Alumnos_id')
+            ->join('cursos', 'cursos.id', '=', 'alumnoscursos.cursos_id')
+            ->select('alumnoscursos.id', 'alumnos.Nombres', 'alumnos.Apellidos', 'cursos.nombrecurso', 'cursos.precio', 'alumnoscursos.Alumnos_id', 'alumnoscursos.cursos_id', 'alumnoscursos.costo', 'alumnoscursos.Calificacion', 'alumnoscursos.Estado')
+            ->when($search, function ($query, $search) {
+                return $query->where('alumnos.Nombres', 'like', '%' . $search . '%')
+                    ->orWhere('alumnos.Apellidos', 'like', '%' . $search . '%')
+                    ->orWhere('cursos.nombrecurso', 'like', '%' . $search . '%')
+                    ->orWhere('alumnoscursos.Calificacion', 'like', '%' . $search . '%');
+            })
+            ->when($estado, function ($query, $estado) {
+                return $query->where('alumnoscursos.Estado', $estado);
+            })
+            ->paginate(10); // Pagina los resultados
 
         //sumo de pago_cursos por alumnocurso_id    de la tabla pagocursos 
         $detalles->map(function ($detalle) {
             $detalle->a_cuenta = PagoCursos::where('alumnocurso_id', $detalle->id)->sum('monto');
             return $detalle;
         });
-      // dd($detalles);
+        // dd($detalles);
         return view('AlumnoCurso.index', compact('detalles'));
     }
     public function pdf(Request $request)
@@ -119,7 +120,7 @@ class AlumnoscursosController extends Controller
 
         $calificacion = intval($datosDetalle['Calificacion']);
         $datosDetalle['Estado'] = $calificacion > 51 ? 'Aprobado' : 'Reprobado';
-        $datosDetalle['costo']=cursos::find($request->cursos_id)->precio;
+        $datosDetalle['costo'] = cursos::find($request->cursos_id)->precio;
         Alumnoscursos::insert($datosDetalle);
 
         return redirect('AlumnoCurso')->with('mensaje', 'Asignado con exito');
@@ -186,7 +187,7 @@ class AlumnoscursosController extends Controller
 
             return response()->json(["errors" => $validator->errors()]);
         }
-      //  dd($request->all());
+        //  dd($request->all());
         $pagocurso = PagoCursos::create([
             'alumnocurso_id' => $request->alumnocurso_id,
             'fecha' => date('Y-m-d H:i:s'),

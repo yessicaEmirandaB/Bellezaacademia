@@ -38,7 +38,6 @@
                 <thead class="table-danger">
                     <tr>
                         <th>#</th>
-                        <th>alumnocurso_id</th>
                         <th>Alumno</th>
                         <th>Curso</th>
                         <th>Costo</th>
@@ -54,7 +53,6 @@
                         @foreach ($detalles as $key => $detalle)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td > {{ $detalle->id }} </td>
                                 <td> {{ $detalle->Nombres }} {{ $detalle->Apellidos }}</td>
                                 <td> {{ $detalle->nombrecurso }} </td>
                                 <td class="text-end"> {{ $detalle->precio }} </td>
@@ -73,11 +71,11 @@
                                         @can('ver-alumnoscursos')
                                             <!--   <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
                                         @endcan
-                                        @include('AlumnoCurso.pagar-curso')
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#pagarCurso">
+                                            data-bs-target="#pagarCurso{{ $detalle->id }}">
                                             <i class="fa fa-money-bill-wave" aria-hidden="true"></i>
                                         </button>
+                                        @include('AlumnoCurso.pagar-curso')
 
                                         @can('editar-alumnoscursos')
                                             <a href="{{ url('/AlumnoCurso/' . $detalle->id . '/edit') }}"
