@@ -13,6 +13,9 @@
                 @csrf
                 <div class="modal-body">
                     <input name="alumnocurso_id" value="{{ $detalle->id }}" hidden>
+                    <input name="alumno_id" value="{{ $detalle->Alumnos_id }}" hidden>
+                    <input name="curso_id" value="{{ $detalle->cursos_id }}" hidden>
+                
                     <div class="row">
                         <div class="col-sm-12">
                             <strong>Alumno:</strong>
@@ -51,7 +54,7 @@
                         </div>
                         <!-- Div para el QR que estará oculto inicialmente -->
                         <div class="col-sm-12 text-center mt-2" id="qr_{{ $detalle->id }}" style="display: none;">
-                            <img src="{{ asset('img/qr.png') }}" alt="QR" width="250" height="250">
+                            <img src="{{ asset('img/qr.png') }}" alt="QR" width="150" height="150">
                         </div>
                         <div class="col-sm-12">
                             <strong>Observación:</strong>

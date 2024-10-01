@@ -16,11 +16,21 @@ class PagoCursos extends Model
         'usuario',
         'monto',
         'metodo_pago',
-        'observacion'
+        'observacion',
+        'alumno_id',
+        'curso_id',
     ];
     public function AlumnosCursos()
     {
         return $this->belongsTo(Alumnoscursos::class, 'alumnocurso_id');
+    }
+    public function Alumnos()
+    {
+        return $this->belongsTo(Alumnos::class,'alumno_id');
+    }
+    public function cursos()
+    {
+        return $this->belongsTo(Cursos::class,'curso_id');
     }
 
 

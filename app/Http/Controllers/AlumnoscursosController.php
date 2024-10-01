@@ -187,7 +187,7 @@ class AlumnoscursosController extends Controller
 
             return response()->json(["errors" => $validator->errors()]);
         }
-        //  dd($request->all());
+//          dd($request->all());
         $pagocurso = PagoCursos::create([
             'alumnocurso_id' => $request->alumnocurso_id,
             'fecha' => date('Y-m-d H:i:s'),
@@ -195,6 +195,8 @@ class AlumnoscursosController extends Controller
             'monto' => $request->monto,
             'metodo_pago' => $request->metodo_pago,
             'observacion' => $request->observacion ?? '',
+            'alumno_id'=> $request->alumno_id,
+            'curso_id'=> $request->curso_id,
         ]);
         return redirect('AlumnoCurso')->with('mensaje', 'Pago registrado con éxito');
     }
