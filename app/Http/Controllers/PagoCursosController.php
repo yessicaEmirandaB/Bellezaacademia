@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class PagoCursosController extends Controller
 {
@@ -121,5 +122,46 @@ class PagoCursosController extends Controller
         $pago_cursos = $pago_cursos->get();
 
         return view('reportes.detalle_ingresos', compact('pago_cursos', 'cursos'));
+    }
+
+    public function detalle_ingreso_pdf(Request $request)
+    {
+        $cursos = DB::table('cursos')->select('id', 'nombrecurso')->get() ?? [];
+        $filtros = new stdClass();
+
+        $fecha_inicio = date('Y-m-d 00:00:00', strtotime($request->fecha_inicio));
+        $fecha_fin = date('Y-m-d 23:59:59', strtotime($request->fecha_fin));
+
+        $pago_cursos = DB::table('pago_cursos')
+            ->select('pago_cursos.*', 'cursos.nombrecurso', 'alumnos.nombres', 'alumnos.apellidos')
+            ->join('cursos', 'pago_cursos.curso_id', '=', 'cursos.id')
+            ->join('alumnos', 'pago_cursos.alumno_id', '=', 'alumnos.id');
+
+
+        if ($request->curso_id != 0) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.curso_id', $request->curso_id);
+            $filtros->curso = cursos::find($request->curso_id)->nombrecurso ?? '';
+        }
+
+        if ($request->fecha_inicio != null) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.fecha', '>=', $fecha_inicio);
+            $filtros->fecha_inicio = date('d-m-Y', strtotime($request->fecha_inicio));
+        }
+
+        if ($request->fecha_fin != null) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.fecha', '<=', $fecha_fin);
+            $filtros->fecha_fin = date('d-m-Y', strtotime($request->fecha_fin));
+        }
+
+        if ($request->metodo_pago != 0) {
+            $pago_cursos = $pago_cursos->where('pago_cursos.metodo_pago', $request->metodo_pago);
+            $filtros->metodo_pago = $request->metodo_pago == 1 ? 'Efectivo' : 'Transferencia';
+        }
+
+        $pago_cursos = $pago_cursos->get();
+
+        $pdf = \PDF::loadView('reportes.detalle_ingresos_pdf', compact('pago_cursos', 'cursos', 'filtros'));
+
+        return $pdf->download('detalle_ingresos.pdf');
     }
 }
