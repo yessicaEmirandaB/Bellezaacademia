@@ -187,7 +187,7 @@ class AlumnoscursosController extends Controller
 
             return response()->json(["errors" => $validator->errors()]);
         }
-//          dd($request->all());
+        //          dd($request->all());
         $pagocurso = PagoCursos::create([
             'alumnocurso_id' => $request->alumnocurso_id,
             'fecha' => date('Y-m-d H:i:s'),
@@ -195,9 +195,27 @@ class AlumnoscursosController extends Controller
             'monto' => $request->monto,
             'metodo_pago' => $request->metodo_pago,
             'observacion' => $request->observacion ?? '',
-            'alumno_id'=> $request->alumno_id,
-            'curso_id'=> $request->curso_id,
+            'alumno_id' => $request->alumno_id,
+            'curso_id' => $request->curso_id,
         ]);
         return redirect('AlumnoCurso')->with('mensaje', 'Pago registrado con éxito');
+    }
+
+    public function balance(Request $request)
+    {
+        $balances = DB::table('pago_cursos')
+            ->select('pago_cursos.*', 'alumnos.Nombres', 'alumnos.Apellidos', 'cursos.nombrecurso', 'alumnoscursos.costo')
+            ->join('alumnos', 'alumnos.id', '=', 'pago_cursos.alumno_id')
+            ->join('cursos', 'cursos.id', '=', 'pago_cursos.curso_id')
+            ->join('alumnoscursos', 'alumnoscursos.id', '=', 'pago_cursos.alumnocurso_id')
+            ->where('pago_cursos.alumnocurso_id', $request->id)
+            ->get();
+        $balances->map(function ($balance) {
+            $balance->a_cuenta = PagoCursos::where('alumnocurso_id', $balance->alumnocurso_id)->sum('monto');
+            return $balance;
+        });
+
+        $pdf = Pdf::loadView('AlumnoCurso.balance', compact('balances'));
+        return $pdf->stream();
     }
 }

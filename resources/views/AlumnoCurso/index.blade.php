@@ -77,6 +77,13 @@
                                         </button>
                                         @include('AlumnoCurso.pagar-curso')
 
+                                        <form action="{{ route('AlumnoCurso.balance', ['id' => $detalle->id]) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-balance-scale"
+                                                    target="_blank" aria-hidden="true"></i></button>
+                                        </form>
+
+
                                         @can('editar-alumnoscursos')
                                             <a href="{{ url('/AlumnoCurso/' . $detalle->id . '/edit') }}"
                                                 class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>

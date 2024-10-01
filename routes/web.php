@@ -69,6 +69,7 @@ Route::get('AlumnoCurso/pdfcali',[ControllersAlumnoscursosController::class, 'pd
 Route::resource('/AlumnoCurso', ControllersAlumnoscursosController::class);
 Route::post('AlumnoCurso/pagar',[ControllersAlumnoscursosController::class, 'pagar_curso'] )->name('AlumnoCurso.pagar');
 
+Route::post('AlumnoCurso/balance',[ControllersAlumnoscursosController::class, 'balance'] )->name('AlumnoCurso.balance');
 Route::get('MaestroCurso/pdf',[DetalleCursoMaestroController::class, 'pdf'] )->name('MaestroCurso.pdf');
 Route::resource('/MaestroCurso', DetalleCursoMaestroController::class);
 Route::get('Maestro/pdf',[MaestrosController::class, 'pdf'] )->name('Maestro.pdf');
