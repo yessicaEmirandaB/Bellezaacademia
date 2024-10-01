@@ -38,7 +38,8 @@
                     <div class="row mt-2">
                         <div class="col-sm-6">
                             <strong>Seleccione Método de Pago:</strong>
-                            <select name="metodo_pago" class="form-control" required>
+                            <select name="metodo_pago" id="metodo_pago_{{ $detalle->id }}"
+                                class="form-control metodo_pago" required>
                                 <option value="Efectivo" selected>Efectivo</option>
                                 <option value="Qr">Qr</option>
                             </select>
@@ -47,6 +48,10 @@
                             <strong>Ingrese Monto:</strong>
                             <input type="number" name="monto" class="form-control" placeholder="Ingrese Monto"
                                 min="1" max="{{ $detalle->precio - $detalle->a_cuenta }}" required>
+                        </div>
+                        <!-- Div para el QR que estará oculto inicialmente -->
+                        <div class="col-sm-12 text-center mt-2" id="qr_{{ $detalle->id }}" style="display: none;">
+                            <img src="{{ asset('img/qr.png') }}" alt="QR" width="250" height="250">
                         </div>
                         <div class="col-sm-12">
                             <strong>Observación:</strong>
@@ -57,7 +62,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
-                            class="fas fa-times"></i>   
+                            class="fas fa-times"></i>
                         Cancelar</button>
                     <button type="submit" class="btn btn-success"><i class="fas fa-money-bill-wave"></i>
                         Pagar</button>
@@ -66,3 +71,25 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener todos los selects de método de pago
+        document.querySelectorAll('.metodo_pago').forEach(function(select) {
+            select.addEventListener('change', function() {
+                const id = this.id.split('_')[
+                    2]; // Obtener el ID del detalle desde el ID del select
+                const qrDiv = document.getElementById('qr_' +
+                    id); // Obtener el contenedor del QR correspondiente
+
+                if (this.value === 'Qr') {
+                    qrDiv.style.display = 'block'; // Mostrar el QR si se selecciona "Qr"
+                } else {
+                    qrDiv.style.display = 'none'; // Ocultar el QR si se selecciona otro método
+                }
+            });
+
+            // Disparar el evento al cargar la página para el estado inicial
+            select.dispatchEvent(new Event('change'));
+        });
+    });
+</script>
