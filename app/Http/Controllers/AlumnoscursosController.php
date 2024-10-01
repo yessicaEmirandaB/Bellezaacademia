@@ -119,9 +119,10 @@ class AlumnoscursosController extends Controller
 
         $calificacion = intval($datosDetalle['Calificacion']);
         $datosDetalle['Estado'] = $calificacion > 51 ? 'Aprobado' : 'Reprobado';
+        $datosDetalle['costo']=cursos::find($request->cursos_id)->precio;
         Alumnoscursos::insert($datosDetalle);
 
-        return redirect('AlumnoCurso')->with('mensaje', 'creada con exito');
+        return redirect('AlumnoCurso')->with('mensaje', 'Asignado con exito');
     }
 
     /**
