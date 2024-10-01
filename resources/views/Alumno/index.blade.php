@@ -12,10 +12,13 @@
         @endif
         @can('crear-alumnos')
             <div class="card-header d-inline-flex">
-                <a href="{{ url('Alumno/create') }}" class="btn btn-success">Registrar nuevo estudiante</a>
+                <a href="{{ url('Alumno/create') }}" class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i>
+                    Registrar nuevo estudiante</a>
                 &nbsp;
                 <!-- <a href="{{ url('Alumno/pdf') }}" class="btn btn-success" target="_blank">PDF</a>  Enlaces de paginación -->
-                <a href="{{ url('Alumno/pdf?search=' . request('search')) }}" class="btn btn-success" target="_blank">PDF</a>
+                <a href="{{ url('Alumno/pdf?search=' . request('search')) }}" class="btn btn-warning" target="_blank"><i
+                        class="fa fa-file-pdf" aria-hidden="true"></i>
+                    PDF</a>
             </div>
         @endcan
         <br>
@@ -28,7 +31,7 @@
         </div>
         <br>
         <div class="container">
-            <table class="table table-striped table-bordered">
+            <table class="table table-sm table-hover table-bordered">
                 <thead class="table-danger">
                     <tr>
                         <th>#</th>
@@ -55,26 +58,28 @@
                                 <td>{{ $alumnos->Celular }}</td>
                                 <td>{{ $alumnos->Correo }}</td>
                                 <td>
-                                    <img class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $alumnos->Foto }}"
-                                        width="100" alt="" />
+                                    <img class="img-thumbnail img-fluid"
+                                        src="{{ asset('storage') . '/' . $alumnos->Foto }}" width="50"
+                                        alt="" />
                                 </td>
-                                <td>{{ $alumnos->user_id }}</td>
+                                <td>{{ $alumnos->user->name }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         @can('ver-alumnos')
                                             <!--   <a href="" class="btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i></a>-->
                                         @endcan
                                         @can('editar-alumnos')
-                                            <a href="{{ url('/Alumno/' . $alumnos->id . '/edit') }}" class="btn btn-warning"><i
-                                                    class="fa fa-pencil-alt"></i></a>
+                                            <a href="{{ url('/Alumno/' . $alumnos->id . '/edit') }}"
+                                                class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>
                                         @endcan
                                         @can('borrar-alumnos')
-                                            <form action="{{ url('/Alumno/' . $alumnos->id) }}" class="d-inline" method="post">
+                                            <form action="{{ url('/Alumno/' . $alumnos->id) }}" class="d-inline"
+                                                method="post">
                                                 @csrf
                                                 {{ method_field('DELETE') }}
 
 
-                                                <button type="submit" class="btn btn-danger"
+                                                <button type="submit" class="btn btn-danger btn-sm"
                                                     onclick="return confirm('¿Desea eliminar?')" value="Borrar"><i
                                                         class="fa fa-trash" aria-hidden="true"></i></button>
 
