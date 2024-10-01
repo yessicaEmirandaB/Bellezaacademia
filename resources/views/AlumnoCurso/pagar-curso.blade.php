@@ -12,7 +12,7 @@
             <form action="{{ route('AlumnoCurso.pagar', $detalle->id) }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <input name="alumnocurso_id" value="{{ $detalle->id }}">
+                    <input name="alumnocurso_id" value="{{ $detalle->id }}" hidden>
                     <div class="row">
                         <div class="col-sm-12">
                             <strong>Alumno:</strong>
@@ -56,8 +56,11 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Pagar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                            class="fas fa-times"></i>   
+                        Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-money-bill-wave"></i>
+                        Pagar</button>
                 </div>
             </form>
         </div>
