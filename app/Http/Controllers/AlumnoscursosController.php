@@ -117,7 +117,17 @@ class AlumnoscursosController extends Controller
         if (!isset($datosDetalle['Calificacion']) || empty($datosDetalle['Calificacion'])) {
             $datosDetalle['Calificacion'] = ''; // Valor por defecto
         }
-
+       // dd($datosDetalle);
+        $existeRegistro = AlumnosCursos::where('alumnos_id', $datosDetalle['Alumnos_id'])
+        ->where('cursos_id', $datosDetalle['cursos_id'])
+        ->first();
+       
+        if ($existeRegistro && $existeRegistro['Calificacion']>=51) {
+         
+            return redirect('AlumnoCurso')->with('error', 'No puede crear un curso aprobado');    
+            
+        
+        }
         $calificacion = intval($datosDetalle['Calificacion']);
         $datosDetalle['Estado'] = $calificacion > 51 ? 'Aprobado' : 'Reprobado';
         $datosDetalle['costo'] = cursos::find($request->cursos_id)->precio;
@@ -142,6 +152,7 @@ class AlumnoscursosController extends Controller
         $detalle = Alumnoscursos::findOrFail($id);
         $alumnos = Alumnos::all();
         $cursos = cursos::all();
+       
         return view('AlumnoCurso.edit', compact('detalle', 'alumnos', 'cursos'));
     }
 
@@ -158,10 +169,17 @@ class AlumnoscursosController extends Controller
             'Estado' => 'string|max:100',
 
         ]);
-
+        
         $datosDetalle = $request->except(['_token', '_method']);
-        Alumnoscursos::where('id', '=', $id)->update($datosDetalle);
+        $detalleActual = DB::table('Alumnoscursos')
+        ->select('id','calificacion')
+        ->where('id', $id)
+        ->first();
+        if($detalleActual->calificacion>=51){
+            return redirect('AlumnoCurso')->with('error','No puede Actualizar un Curso que ya tiene nota');
+        }
 
+        Alumnoscursos::where('id', '=', $id)->update($datosDetalle);
         return redirect('AlumnoCurso')->with('mensaje', 'Actualizado con éxito');
     }
 

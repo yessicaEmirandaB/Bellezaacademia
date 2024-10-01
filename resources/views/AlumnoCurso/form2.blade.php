@@ -1,13 +1,13 @@
 <h1>{{ $modo }} AlumnoCurso </h1>
 
 @if (count($errors) > 0)
-    <div class="alert alert-danger" role="alert">
-        <ul>
-            @foreach ($errors->all() as $errors)
-                <li>{{ $errors }}</li>
-            @endforeach
-        </ul>
-    </div>
+<div class="alert alert-danger" role="alert">
+    <ul>
+        @foreach ($errors->all() as $errors)
+        <li>{{ $errors }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 
 
@@ -18,8 +18,9 @@
     <select name="Alumnos_id" id="Alumnos_id" class="form-control" required>
         <option value="">Seleccionar alumno</option>
         @foreach ($alumnos as $alumno)
-            <option value="{{ $alumno->id }}"@if ($alumno->id == $detalle->Alumnos_id) {{ 'selected' }} @endif>
-                {{ $alumno->Nombres }} {{ $alumno->Apellidos }}</option>
+        <option value="{{ $alumno->id }}" @if ($alumno->id == $detalle->Alumnos_id) {{ 'selected' }} @endif>
+            {{ $alumno->Nombres }} {{ $alumno->Apellidos }}
+        </option>
         @endforeach
     </select>
 </div>
@@ -29,8 +30,9 @@
     <select name="cursos_id" id="cursos_id" class="form-control" required>
         <option value="">Seleccionar curso</option>
         @foreach ($cursos as $curso)
-            <option value="{{ $curso->id }}"@if ($curso->id == $detalle->cursos_id) {{ 'selected' }} @endif>
-                {{ $curso->nombrecurso }}</option>
+        <option value="{{ $curso->id }}" @if ($curso->id == $detalle->cursos_id) {{ 'selected' }} @endif>
+            {{ $curso->nombrecurso }}
+        </option>
         @endforeach
     </select>
 </div>
@@ -38,8 +40,13 @@
     <label for="Calificacion">Calificación</label>
     <input type="number" name="Calificacion" id="Calificacion" class="form-control" value="{{ $detalle->Calificacion }}" required>
 </div>
-
-<input class="btn btn-success" type="submit" value="{{ $modo }} datos">
-
-<a class="btn btn-primary" href="{{ url('AlumnoCurso/') }}">Regresar</a>
 <br>
+
+<div class="modal-footer d-flex justify-content-start">
+    <a class="btn btn-secondary" href="{{ url('AlumnoCurso/') }}">
+        <i class="fas fa-times"></i> Regresar
+    </a>
+    <button class="btn btn-success" type="submit">
+        <i class="fas fa-check"></i> {{ $modo }} datos
+    </button>
+</div>
