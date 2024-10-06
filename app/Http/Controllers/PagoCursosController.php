@@ -6,9 +6,10 @@ use App\Models\cursos;
 use App\Models\PagoCursos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Auth;
-use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 class PagoCursosController extends Controller
 {
     /**
@@ -119,6 +120,8 @@ class PagoCursosController extends Controller
         }
 
         $pago_cursos = $pago_cursos->get();
+
+       
 
         return view('reportes.detalle_ingresos', compact('pago_cursos', 'cursos'));
     }
