@@ -3,8 +3,9 @@
 
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
@@ -12,33 +13,78 @@
 
     <title>REPORTE</title>
     <style>
-        h1 {
+        h4 {
+            text-align: center;
             color: brown;
+            border-bottom: 1px solid #000;
+
         }
 
-        .row {
-            margin-top: 10px;
+        .estilo-contenedor {
+            width: 100%;
+            margin: 0 auto;
+            font-family: 'Verdana, Geneva, Tahoma, sans-serif';
+            font-size: 12px;
         }
+
+        .estilos-tabla {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .estilos-thead {
+            background-color: #f2f2f2;
+        }
+
+        .estilos-thead th {
+            border: 1px solid #000;
+            padding: 1px;
+            text-align: center;
+        }
+
+        .estilos-tabla td {
+            border: 1px solid #000;
+            padding: 1px;
+            text-align: center;
+        }
+
+
     </style>
+
 </head>
 
 <body>
-    <div class="row">
-        <img src="imagenes/logo.jpg" alt="" width="50px" height="50px">
-    </div>
-    <div class="row">
-        <h1 class="text-center" style="color: brown;">INFORME GENERAL DE INGRESOS</h1>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <strong>Fecha Inicio:</strong> {{ $filtros->fecha_inicio ?? ' ' }} - <strong>Fecha Fin:</strong>
-            {{ $filtros->fecha_fin ?? ' ' }} - <strong>Curso:</strong> {{ $filtros->curso ?? 'Todos' }} - <strong>Método
-                de Pago:</strong> {{ $filtros->metodo_pago ?? 'Todos' }}
+    <div class="estilo-contenedor">
+        <div class="row">
+            <div class="header">
+                <img src="imagenes/logo.jpg" alt="" width="50px" height="50px">
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <table class="table table-striped table-bordered" style="font-size: 12px;">
-            <thead class="table-warning">
+        <div class="row">
+            <h4 class="text-center" style="color: brown; font-family: 'Verdana, Geneva, Tahoma, sans-serif'">
+                INFORME GENERAL DE INGRESOS</h4>
+        </div>
+        <div class="row">
+            @if ($filtros->fecha_inicio ?? (' ' != ' ' && $filtros->fecha_fin ?? ' ' != ' '))
+                <div class="col-md-3">
+                    <strong>Fecha Inicio:</strong> {{ $filtros->fecha_inicio ?? ' ' }}
+                </div>
+                <div class="col-md-3">
+                    <strong>Fecha Fin:</strong>
+                    {{ $filtros->fecha_fin ?? ' ' }}
+                </div>
+            @endif
+            <div class="col-md-3">
+                <strong>Curso:</strong> {{ $filtros->curso ?? 'Todos' }}
+            </div>
+            <div class="col-md-3 mb-1">
+                <strong>Método
+                    de Pago:</strong> {{ $filtros->metodo_pago ?? 'Todos' }}
+            </div>
+        </div>
+
+        <table class="estilos-tabla">
+            <thead class="estilos-thead">
                 <tr>
                     <th>#</th>
                     <th>Fecha</th>
@@ -74,6 +120,9 @@
                 </tr>
             </tfoot>
         </table>
+
+        <strong>Generado Por:</strong> {{ Auth::user()->name }} <br>
+        <strong>En Fecha:</strong> {{ date('d-m-Y H:i:s') }}
     </div>
 </body>
 

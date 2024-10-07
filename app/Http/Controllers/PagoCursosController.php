@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use stdClass;
+use PDF;
 
 class PagoCursosController extends Controller
 {
@@ -160,7 +161,9 @@ class PagoCursosController extends Controller
 
         $pago_cursos = $pago_cursos->get();
 
-        $pdf = \PDF::loadView('reportes.detalle_ingresos_pdf', compact('pago_cursos', 'cursos', 'filtros'));
+        $pdf = PDF::loadView('reportes.detalle_ingresos_pdf', compact('pago_cursos', 'cursos', 'filtros')) 
+            ->setPaper('letter');
+
 
         return $pdf->download('detalle_ingresos.pdf');
     }
