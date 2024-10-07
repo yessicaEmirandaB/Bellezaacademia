@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pago_cursos', function (Blueprint $table) {
-            $table->tinyInteger('alumno_id')->after('observacion'); 
-            $table->integer('curso_id')->after('alumno_id'); 
+            $table->unsignedBigInteger('alumno_id')->after('observacion');
+            $table->unsignedBigInteger('curso_id')->after('alumno_id'); // Asegúrate de usar unsignedBigInteger también
 
+            // Agregar las claves foráneas
             $table->foreign('alumno_id')->references('id')->on('alumnos');
             $table->foreign('curso_id')->references('id')->on('cursos');
-    
         });
     }
 
@@ -27,6 +27,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pago_cursos', function (Blueprint $table) {
+            // Primero eliminar las claves foráneas
+            $table->dropForeign(['alumno_id']);
+            $table->dropForeign(['curso_id']);
+
+            // Luego eliminar las columnas
             $table->dropColumn('alumno_id');
             $table->dropColumn('curso_id');
         });

@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('pago_cursos', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('alumnocurso_id');
+            $table->unsignedBigInteger('alumnocurso_id');
             $table->dateTime('fecha');
             $table->string('usuario');
             $table->decimal('monto', 10, 2);
             $table->string('metodo_pago');
             $table->string('observacion')->nullable();
 
-            $table->foreign('alumnocurso_id')->references('id')->on('alumno_cursos');
+            $table->foreign('alumnocurso_id')->references('id')->on('alumnoscursos');
             $table->timestamps();
         });
     }
