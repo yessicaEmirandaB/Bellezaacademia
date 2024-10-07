@@ -234,6 +234,6 @@ class AlumnoscursosController extends Controller
         });
 
         $pdf = Pdf::loadView('AlumnoCurso.balance', compact('balances'));
-        return $pdf->stream();
+        return $pdf->download('balance.pdf');
     }
 }
