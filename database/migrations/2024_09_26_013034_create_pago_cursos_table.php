@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('monto', 10, 2);
             $table->string('metodo_pago');
             $table->string('observacion')->nullable();
+
+            $table->foreign('alumnocurso_id')->references('id')->on('alumno_cursos');
             $table->timestamps();
         });
     }

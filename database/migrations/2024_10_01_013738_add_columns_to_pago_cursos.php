@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::table('pago_cursos', function (Blueprint $table) {
             $table->tinyInteger('alumno_id')->after('observacion'); 
             $table->integer('curso_id')->after('alumno_id'); 
+
+            $table->foreign('alumno_id')->references('id')->on('alumnos');
+            $table->foreign('curso_id')->references('id')->on('cursos');
     
         });
     }
