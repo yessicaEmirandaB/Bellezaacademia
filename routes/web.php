@@ -107,5 +107,8 @@ Route::get('/CursodePlanchado', [IndexController::class, 'Planchado'])->name('Cu
 Route::get('reportes.detalle_ingresos', [PagoCursosController::class, 'detalle_ingreso'])->name('reportes.detalle_ingresos');
 Route::post('reportes.detalle_ingresos', [PagoCursosController::class, 'detalle_ingreso'])->name('reportes.detalle_ingresos');
 
+Route::get('reportes.detalle_ingresos_pdf', [PagoCursosController::class, 'detalle_ingreso_pdf'])->name('reportes.detalle_ingresos_pdf');
+Route::post('reportes.detalle_ingresos_pdf', [PagoCursosController::class, 'detalle_ingreso_pdf'])->name('reportes.detalle_ingresos_pdf');
+
 Route::get('reportes.filtro_ingresos', [PagoCursosController::class, 'filtro_ingresos'])->name('filtro_ingresos');
 Route::post('reportes.filtro_ingresos', [PagoCursosController::class, 'filtro_ingresos'])->name('filtro_ingresos');

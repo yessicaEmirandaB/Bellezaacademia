@@ -4,13 +4,13 @@
     <div class="container">
         <div class="col-md-12 text-center">
             <h2> <i class="fa fa-file"></i>
-                Reporte de Ingresos</h2>
+                Informe General de Ingresos</h2>
         </div>
         @include('reportes.filtros_detalle_ingresos')
         <div class="card">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped mt-1">
                         <thead>
                             <tr>
                                 <th>#</th>
